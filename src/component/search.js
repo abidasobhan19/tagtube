@@ -52,7 +52,7 @@ const Search = ({ setVideos }) => {
         color="primary"
         onClick={searchButtonClick}
       >
-        Primary
+        Search
       </Button>
     </div>
   );
