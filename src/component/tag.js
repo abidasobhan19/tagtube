@@ -3,40 +3,45 @@ import { Box, Typography } from "@material-ui/core";
 import { Fragment } from "react";
 import axios from "axios";
 
-const Tag = ({ videos }) => {
+const Tag = ({ tags }) => {
   //   console.log(videos);
 
   const [myTags, setMyTags] = useState([]);
+  const [value, setValue] = useState("");
 
-  useEffect(() => {
-    if (videos.length > 0) {
-      videos.map((item) => {
-        const url =
-          "https://www.googleapis.com/youtube/v3/videos?part=contentDetails&part=snippet&part=id&id=" +
-          item +
-          "&key=AIzaSyDv39NYwKF33F9NKbFjcFur43JttKlOZjs";
+  const handleChange = (e) => {};
 
-        axios
-          .get(url)
-          .then((response) => {
-            const item = response.data.items[0];
+  useEffect(() => setValue(getValuesFromVideo()), [tags]);
 
-            if (item) {
-              const tags = item.snippet.tags;
+  // useEffect(() => {
+  //   if (videos.length > 0) {
+  //     videos.map((item) => {
+  //       const url =
+  //         "https://www.googleapis.com/youtube/v3/videos?part=contentDetails&part=snippet&part=id&id=" +
+  //         item +
+  //         "&key=AIzaSyDv39NYwKF33F9NKbFjcFur43JttKlOZjs";
 
-              if (tags) {
-                setMyTags((old) => [...old, tags]);
-              }
-            }
-          })
-          .catch((err) => console.log(err));
-      });
-    }
-  }, [videos]);
+  //       axios
+  //         .get(url)
+  //         .then((response) => {
+  //           const item = response.data.items[0];
+
+  //           if (item) {
+  //             const tags = item.snippet.tags;
+
+  //             if (tags) {
+  //               setMyTags((old) => [...old, tags]);
+  //             }
+  //           }
+  //         })
+  //         .catch((err) => console.log(err));
+  //     });
+  //   }
+  // }, [videos]);
 
   const getValuesFromVideo = () => {
     let ttt = "";
-    myTags.map((item) => {
+    tags.map((item) => {
       ttt = ttt + item + "\n";
     });
 
@@ -93,21 +98,18 @@ const Tag = ({ videos }) => {
   //     .catch((err) => console.log(err));
 
   return (
-    <Fragment>
-      <Box>
-        <Typography style={{ marginTop: 50 }} variant="h6">
-          Generated Tag
-        </Typography>
-      </Box>
-      <Box>
+    <Box display="flex" flexDirection="column" flexGrow="1">
+      <Typography variant="h6">Generated Tags</Typography>
+
+      <Box display="flex" flexGrow="1">
         <textarea
-          style={{ marginTop: "50px", width: "50%", height: "155px" }}
-          variant="outlined"
+          style={{ width: "100%", height: "100%" }}
           label="Message:"
-          value={getValuesFromVideo()}
+          value={value}
+          onChange={handleChange}
         ></textarea>
       </Box>
-    </Fragment>
+    </Box>
   );
 };
 

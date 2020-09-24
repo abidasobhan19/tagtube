@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import { Button } from "@material-ui/core";
+
+import { Box, TextField, InputAdornment, IconButton } from "@material-ui/core";
 import axios from "axios";
 
-const Search = ({ setVideos }) => {
+import { Search as SearchIcon, Clear } from "@material-ui/icons";
+
+const url = "https://forbit.tech/api/api/tags";
+
+const Search = ({ setTags }) => {
   const [keyword, setKeyword] = useState("");
 
   const handleChange = (e) => {
@@ -11,50 +15,48 @@ const Search = ({ setVideos }) => {
   };
 
   const searchButtonClick = (e) => {
-    const url =
-      "https://www.googleapis.com/youtube/v3/search?maxResults=100000&order=relevance&q=" +
-      keyword +
-      "&videoType=any&key=AIzaSyDv39NYwKF33F9NKbFjcFur43JttKlOZjs";
+    const data = { query: keyword };
 
-    console.log(url);
     axios
-      .get(url)
+      .post(url, data)
       .then((response) => {
-        const items = response.data.items.filter((item) => item.id.videoId);
-
-        const videos = [];
-        items.map((item) => {
-          videos.push(item.id.videoId);
-        });
-
-        // var json = JSON.stringify(videos);
-        // console.log(json);
-
-        setVideos(videos);
+        setTags(response.data);
       })
       .catch((err) => console.log(err));
   };
 
-  return (
-    <div>
-      <TextField
-        style={{ marginTop: 150, width: "50%" }}
-        label="Search Keyword"
-        variant="standard"
-        name="keyword"
-        value={keyword}
-        onChange={handleChange}
-      />
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      searchButtonClick();
+    }
+  };
 
-      <Button
-        style={{ marginTop: 152, height: 50, marginLeft: 20 }}
-        variant="contained"
-        color="primary"
-        onClick={searchButtonClick}
-      >
-        Search
-      </Button>
-    </div>
+  return (
+    <TextField
+      id="input-with-icon-textfield"
+      name="keyword"
+      value={keyword}
+      onChange={handleChange}
+      variant="outlined"
+      fullWidth
+      onKeyDown={handleKeyDown}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <IconButton onClick={searchButtonClick}>
+              <SearchIcon />
+            </IconButton>
+          </InputAdornment>
+        ),
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton onClick={() => setKeyword("")}>
+              <Clear />
+            </IconButton>
+          </InputAdornment>
+        ),
+      }}
+    />
   );
 };
 
