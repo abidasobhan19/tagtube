@@ -3,7 +3,6 @@ import Nav from "./nav";
 import Search from "./search";
 import { Box, Typography } from "@material-ui/core";
 import Tag from "./tag";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import bg1 from "../image/bg1.png";
 const Main = () => {

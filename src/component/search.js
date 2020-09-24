@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Box, TextField, InputAdornment, IconButton } from "@material-ui/core";
+import { TextField, InputAdornment, IconButton } from "@material-ui/core";
 import axios from "axios";
 
 import { Search as SearchIcon, Clear } from "@material-ui/icons";
